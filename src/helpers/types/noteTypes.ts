@@ -1,7 +1,7 @@
 export interface Note {
   id: number;
   name: string;
-  createdAt: Date;
+  createdAt: string;
   content: string;
   category: NoteCategory;
   datesMentioned: string[];

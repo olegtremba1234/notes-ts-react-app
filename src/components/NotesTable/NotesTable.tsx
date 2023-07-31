@@ -49,7 +49,7 @@ const NotesTable: React.FC<NotesTableProps> = ({ categories,onOpenEditNoteModal 
         {activeNotes.map((note) => (
           <tr key={note.id}>
             <Td>{note.name}</Td>
-            <Td>{note.createdAt.toISOString()}</Td>
+            <Td>{note.createdAt}</Td>
             <Td>{note.category}</Td>
             <Td>{note.content}</Td>
                 <Td>{note.datesMentioned.join(', ')}</Td>

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { NoteCategory } from './helpers/types/noteTypes';
-import NoteForm from './components/NoteForm/NoteForm';
+import NoteForm from './components/NoteForm/AddNoteForm';
 import NotesTable from './components/NotesTable/NotesTable';
 import Header from './components/Header/Header';
 import Modal from './components/Modal/Modal';
@@ -33,8 +33,7 @@ const App: React.FC = () => {
     <div>
       <Header/>
       <NotesTable categories={categories} onOpenEditNoteModal={handleOpenEditNoteModal} />
-      <AddNoteButton/>
-      {/* <button onClick={handleOpenAddNoteModal}>Add note</button> */}
+      <AddNoteButton onClick={handleOpenAddNoteModal}/>
         <Modal isOpen={isAddNoteModalOpen} onClose={handleCloseAddNoteModal}>
           <NoteForm categories={categories} />
         </Modal>

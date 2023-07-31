@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { addNote } from '../../redux/actions/noteActions';
 import { NoteCategory, Note } from '../../helpers/types/noteTypes';
+import dateParser from '../../utils/dataParser';
 
 interface NoteFormProps {
   categories: NoteCategory[];
@@ -10,19 +11,20 @@ interface NoteFormProps {
 const NoteForm: React.FC<NoteFormProps> = ({ categories }) => {
   const [name, setName] = useState('')
   const [noteContent, setNoteContent] = useState('');
-  const [selectedCategory, setSelectedCategory] = useState<NoteCategory | ''>(''); // Update the state type
+  const [selectedCategory, setSelectedCategory] = useState<NoteCategory | ''>('');
 
   const dispatch = useDispatch();
 
   const handleAddNote = () => {
     if (noteContent.trim() !== '' && selectedCategory !== '') {
+      const datesMentioned = dateParser(noteContent);
       const newNote: Note = {
         id: Date.now(),
         name: name,
-        createdAt: new Date(),
+        createdAt: new Date(Date.now()).toLocaleString(),
         content: noteContent,
         category: selectedCategory,
-        datesMentioned: [], // You can add date parsing here if needed
+        datesMentioned: datesMentioned, // You can add date parsing here if needed
         archived: false,
       };
 
