@@ -1,6 +1,8 @@
 import { createGlobalStyle } from 'styled-components'
 import { normalize } from 'styled-normalize'
 
+import BackgroundImage from '../Images/wood.png'
+
 const GlobalStyles = createGlobalStyle`
 ${normalize}
 h1,
@@ -41,11 +43,12 @@ body {
   min-height: 100vh;
   display: flex;
   flex-direction: column;
-   background-image:linear-gradient(rgba(105, 67, 0, 0.1) 0%, transparent 5.5%), url('../Images/wood.png');
+   background-image:linear-gradient(rgba(105, 67, 0, 0.1) 0%, transparent 5.5%), url(${BackgroundImage});
     background-repeat: no-repeat, repeat;
     background-size: auto, 400px 400px;
     overflow-x: hidden;
-    padding: 3vh
+    padding: 3vh;
+    background-color: #f2f2;
 }
 `
 

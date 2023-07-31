@@ -1,7 +1,9 @@
 import React from "react"
-import {Button} from './AddNoteButton.styled'
+import {Button,ButtonContainer} from './AddNoteButton.styled'
 const AddNoteButton = () => {
-    return <Button>Add note</Button>
+    return <ButtonContainer>
+        <Button>Add note</Button>
+        </ButtonContainer>
 }
 
 export default AddNoteButton
