@@ -43,7 +43,11 @@ body {
   min-height: 100vh;
   display: flex;
   flex-direction: column;
-   background-image:linear-gradient(rgba(105, 67, 0, 0.1) 0%, transparent 5.5%), url(${BackgroundImage});
+  font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif, Apple Color Emoji, Segoe UI Emoji; 
+}
+
+body{
+  background-image:linear-gradient(rgba(105, 67, 0, 0.1) 0%, transparent 5.5%), url(${BackgroundImage});
     background-repeat: no-repeat, repeat;
     background-size: auto, 400px 400px;
     overflow-x: hidden;

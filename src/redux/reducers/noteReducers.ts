@@ -19,14 +19,13 @@ const noteReducer = (state = initialState, action: NoteActionTypes): NoteState =
         activeNotes: [...state.activeNotes, action.payload],
           };
     case EDIT_NOTE:
+      const editedNote = action.payload;
+      const updatedActiveNotes = state.activeNotes.map((note) =>
+        note.id === editedNote.id ? editedNote : note
+      );
       return {
         ...state,
-        activeNotes: state.activeNotes.map((note) =>
-          note.id === action.payload.id ? action.payload : note
-        ),
-        archivedNotes: state.archivedNotes.map((note) =>
-          note.id === action.payload.id ? action.payload : note
-        ),
+        activeNotes: updatedActiveNotes,
       };
     case ARCHIVE_NOTE:
       const noteToArchive = state.activeNotes.find((note) => note.id === action.payload);

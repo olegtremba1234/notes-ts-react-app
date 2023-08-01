@@ -12,10 +12,10 @@ export const addNote = (note: Note): NoteActionTypes => ({
   payload: note,
 });
 
-export const editNote = (editedNote: Note) => {
+export const editNote = (note: Note) => {
   return {
     type: EDIT_NOTE,
-    payload: editedNote,
+    payload: note,
   };
 };
 
