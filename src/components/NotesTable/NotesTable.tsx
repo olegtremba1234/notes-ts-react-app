@@ -14,8 +14,7 @@ interface NotesTableProps {
 }
 
 const NotesTable: React.FC<NotesTableProps> = ({ categories,onOpenEditNoteModal }) => {
-  const activeNotes = useSelector((state: RootState) => state.note.activeNotes);
-  const archivedNotes = useSelector((state: RootState) => state.note.archivedNotes);
+  const notes = useSelector((state: RootState) => state.note.notes);
   const dispatch = useDispatch();
   const [showArchived, setShowArchived] = useState(false);
 
@@ -27,12 +26,12 @@ const NotesTable: React.FC<NotesTableProps> = ({ categories,onOpenEditNoteModal 
        onOpenEditNoteModal(note);
     }
     
-  const handleArchiveNote = (id: number) => {
-    dispatch(archiveNote(id));
-  };
-
-  const handleUnarchiveNote = (id: number) => {
-    dispatch(unarchiveNote(id));
+ const handleToggleArchiveNote = (note: Note) => {
+    if (note.archived) {
+      dispatch(unarchiveNote(note.id));
+    } else {
+      dispatch(archiveNote(note.id));
+    }
   };
 
   const removeNoteModal = (id: number) => {
@@ -53,47 +52,13 @@ const NotesTable: React.FC<NotesTableProps> = ({ categories,onOpenEditNoteModal 
           <Th>Content</Th>
           <Th>Dates</Th>
           <Th></Th>
-          <Th>
-              <label>
-                <ActionButton onClick={handleToggleArchived}>
-                  <FontAwesomeIcon icon={faBoxArchive} size='lg'/>
-                </ActionButton>
-              {/* <input type="checkbox" checked={showArchived} onChange={() => setShowArchived(!showArchived)} /> */}
-            </label>
-          </Th>
+          <Th></Th>
           <Th></Th>
         </tr>
       </Thead>
         <tbody>
-          
-          {showArchived
-            ? archivedNotes.map((note) => (
-                <Tr key={note.id}>
-                  <Td>{note.name}</Td>
-                  <Td>{note.createdAt}</Td>
-                  <Td>{note.category}</Td>
-                  <Td>{note.content}</Td>
-                  <Td>{note.datesMentioned.join(', ')}</Td>
-                <Td>
-                  <ActionButton onClick={() => handleEditNote(note)}>
-                    <FontAwesomeIcon icon={faPen} size="lg" />
-                  </ActionButton>
-                </Td>
-                <Td>
-                  <ActionButton onClick={() => handleUnarchiveNote(note.id)}>
-                    <FontAwesomeIcon icon={faBoxArchive} size='lg'/>
-                  </ActionButton>
-                </Td>
-                <Td>
-                  <ActionButton onClick={() => removeNoteModal(note.id)}>
-                    <FontAwesomeIcon icon={faTrash} size="lg" />
-                  </ActionButton>
-                
-                </Td>
-                </Tr>
-              ))
-            : activeNotes.map((note) => (
-          <Tr key={note.id}>
+          {notes.map((note) => (
+          <Tr key={note.id} archived={note.archived}>
             <Td>{note.name}</Td>
             <Td>{note.createdAt}</Td>
             <Td>{note.category}</Td>
@@ -105,7 +70,7 @@ const NotesTable: React.FC<NotesTableProps> = ({ categories,onOpenEditNoteModal 
               </ActionButton>
             </Td>
             <Td>
-              <ActionButton onClick={() => handleArchiveNote(note.id)}>
+              <ActionButton onClick={() => handleToggleArchiveNote(note)}>
                 <FontAwesomeIcon icon={faBoxArchive} size='lg'/>
               </ActionButton>
             </Td>

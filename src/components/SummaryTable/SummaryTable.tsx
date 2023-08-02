@@ -1,51 +1,51 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../redux/reducers/rootReducer';
-import { NoteCategory } from '../../helpers/types/noteTypes';
+import { NoteCategory, Note } from '../../helpers/types/noteTypes';
 import { SummaryData } from '../../helpers/types/summaryTypes';
 
-import { TableContainer ,Table, TableHeaderCell, TableCell, TableRow } from './SummaryTable.styled';
+import { TableContainer, Table, TableHeaderCell, TableCell, TableRow } from './SummaryTable.styled';
 
 interface SummaryTableProps {
   categories: NoteCategory[];
 }
 
 const SummaryTable: React.FC<SummaryTableProps> = ({ categories }) => {
-  const activeNotes = useSelector((state: RootState) => state.note.activeNotes);
-  const archivedNotes = useSelector((state: RootState) => state.note.archivedNotes);
+  const notes = useSelector((state: RootState) => state.note.notes);
 
-  const countNotesByCategory = (notes: NoteCategory[], active: boolean): SummaryData => {
-    return notes.reduce((counts: SummaryData, category) => {
-      const count = active
-        ? activeNotes.filter((note) => note.category === category).length
-        : archivedNotes.filter((note) => note.category === category).length;
-      return { ...counts, [category]: count };
+  const countNotesByCategory = (notes: Note[], active: boolean): SummaryData => {
+    return notes.reduce((counts: SummaryData, note) => {
+      if ((active && !note.archived) || (!active && note.archived)) {
+        const category = note.category;
+        counts[category] = (counts[category] || 0) + 1;
+      }
+      return counts;
     }, {});
   };
 
-  const activeNotesByCategory: SummaryData = countNotesByCategory(categories, true);
-  const archivedNotesByCategory: SummaryData = countNotesByCategory(categories, false);
+  const activeNotesByCategory: SummaryData = countNotesByCategory(notes, true);
+  const archivedNotesByCategory: SummaryData = countNotesByCategory(notes, false);
 
   return (
     <TableContainer>
-    <Table>
-      <thead>
-        <tr>
-          <TableHeaderCell>Category</TableHeaderCell>
-          <TableHeaderCell>Active Notes</TableHeaderCell>
-          <TableHeaderCell>Archived Notes</TableHeaderCell>
-        </tr>
-      </thead>
-      <tbody>
-        {categories.map((category) => (
-          <TableRow key={category}>
-            <TableCell>{category}</TableCell>
-            <TableCell>{activeNotesByCategory[category]}</TableCell>
-            <TableCell>{archivedNotesByCategory[category]}</TableCell>
-          </TableRow>
-        ))}
-      </tbody>
-    </Table>
+      <Table>
+        <thead>
+          <tr>
+            <TableHeaderCell>Category</TableHeaderCell>
+            <TableHeaderCell>Active Notes</TableHeaderCell>
+            <TableHeaderCell>Archived Notes</TableHeaderCell>
+          </tr>
+        </thead>
+        <tbody>
+          {categories.map((category) => (
+            <TableRow key={category}>
+              <TableCell>{category}</TableCell>
+              <TableCell>{activeNotesByCategory[category] || 0}</TableCell>
+              <TableCell>{archivedNotesByCategory[category] || 0}</TableCell>
+            </TableRow>
+          ))}
+        </tbody>
+      </Table>
     </TableContainer>
   );
 };
