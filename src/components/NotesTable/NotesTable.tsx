@@ -1,12 +1,13 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from '../../redux/reducers/rootReducer';
 import { Note, NoteCategory } from '../../helpers/types/noteTypes';
 import { archiveNote, unarchiveNote, removeNote } from '../../redux/actions/noteActions';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faBoxArchive,faPen,faTrash } from '@fortawesome/free-solid-svg-icons'
+import { faBoxArchive, faPen, faTrash } from '@fortawesome/free-solid-svg-icons'
+import Table from '../Table/Table';
 
-import { NoteTableContainer, NoteTable, Tr, Td, Th, Thead, ActionButton } from './NoteTable.styled'
+import {  Tr, Td,  ActionButton } from './NoteTable.styled'
 
 interface NotesTableProps {
   categories: NoteCategory[];
@@ -16,12 +17,7 @@ interface NotesTableProps {
 const NotesTable: React.FC<NotesTableProps> = ({ categories,onOpenEditNoteModal }) => {
   const notes = useSelector((state: RootState) => state.note.notes);
   const dispatch = useDispatch();
-  const [showArchived, setShowArchived] = useState(false);
-
-  const handleToggleArchived = () => {
-    setShowArchived((prevShowArchived) => !prevShowArchived);
-  };
-
+ 
     const handleEditNote = (note: Note) => {
        onOpenEditNoteModal(note);
     }
@@ -41,24 +37,10 @@ const NotesTable: React.FC<NotesTableProps> = ({ categories,onOpenEditNoteModal 
     }
   };
 
-  return (
-    <NoteTableContainer>
-    <NoteTable>
-      <Thead>
-        <tr>
-          <Th>Name</Th>
-          <Th>Created</Th>
-          <Th>Category</Th>
-          <Th>Content</Th>
-          <Th>Dates</Th>
-          <Th></Th>
-          <Th></Th>
-          <Th></Th>
-        </tr>
-      </Thead>
-        <tbody>
-          {notes.map((note) => (
-          <Tr key={note.id} archived={note.archived}>
+  const columns = ['Name', 'Created', 'Category', 'Content', 'Dates', '', '', ''];
+
+  const renderRow = (note: Note) => (
+     <Tr key={note.id} archived={note.archived}>
             <Td>{note.name}</Td>
             <Td>{note.createdAt}</Td>
             <Td>{note.category}</Td>
@@ -80,10 +62,10 @@ const NotesTable: React.FC<NotesTableProps> = ({ categories,onOpenEditNoteModal 
                 </ActionButton>
             </Td>
           </Tr>
-        ))}
-      </tbody>
-    </NoteTable>
-    </NoteTableContainer>
+   )
+
+  return (
+    <Table data={notes} columns={columns} renderRow={renderRow} />
   );
 };
 

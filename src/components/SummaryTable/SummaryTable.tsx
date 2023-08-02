@@ -3,8 +3,9 @@ import { useSelector } from 'react-redux';
 import { RootState } from '../../redux/reducers/rootReducer';
 import { NoteCategory, Note } from '../../helpers/types/noteTypes';
 import { SummaryData } from '../../helpers/types/summaryTypes';
+import Table from '../Table/Table';
 
-import { TableContainer, Table, TableHeaderCell, TableCell, TableRow } from './SummaryTable.styled';
+import {TableCell, TableRow } from './SummaryTable.styled';
 
 interface SummaryTableProps {
   categories: NoteCategory[];
@@ -26,27 +27,18 @@ const SummaryTable: React.FC<SummaryTableProps> = ({ categories }) => {
   const activeNotesByCategory: SummaryData = countNotesByCategory(notes, true);
   const archivedNotesByCategory: SummaryData = countNotesByCategory(notes, false);
 
+  const columns = ['Category', 'Active Notes', 'Archived Notes'];
+
+  const renderRow = (category: NoteCategory) => (
+    <TableRow key={category}>
+      <TableCell>{category}</TableCell>
+      <TableCell>{activeNotesByCategory[category] || 0}</TableCell>
+      <TableCell>{archivedNotesByCategory[category] || 0}</TableCell>
+    </TableRow>
+  );
+
   return (
-    <TableContainer>
-      <Table>
-        <thead>
-          <tr>
-            <TableHeaderCell>Category</TableHeaderCell>
-            <TableHeaderCell>Active Notes</TableHeaderCell>
-            <TableHeaderCell>Archived Notes</TableHeaderCell>
-          </tr>
-        </thead>
-        <tbody>
-          {categories.map((category) => (
-            <TableRow key={category}>
-              <TableCell>{category}</TableCell>
-              <TableCell>{activeNotesByCategory[category] || 0}</TableCell>
-              <TableCell>{archivedNotesByCategory[category] || 0}</TableCell>
-            </TableRow>
-          ))}
-        </tbody>
-      </Table>
-    </TableContainer>
+    <Table data={categories} columns={columns} renderRow={renderRow} />
   );
 };
 
