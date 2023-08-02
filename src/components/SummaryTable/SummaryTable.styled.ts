@@ -1,7 +1,6 @@
 import styled from 'styled-components';
 
 const noteTableBorderColor = '#ccc';
-const noteTableHeaderBg = '#f2f2f2';
 const noteTableRowBg = '#fff';
 
 export const TableCell = styled.td`
