@@ -1,7 +1,9 @@
-import {Title} from './Header.styled'
+import {Title, TitleContainer} from './Header.styled'
 
 const Header = () => {
-    return <Title>Notes</Title>
+    return <TitleContainer>
+        <Title>Notes</Title>
+    </TitleContainer>
 }
 
 export default Header

@@ -22,3 +22,9 @@ background-color: #007bff;
         background-color: #0056b3;
     }
 `
+
+export const ButtonContainer = styled.div`
+    margin-top: 20px;
+    display: flex;
+    justify-content: end;
+`

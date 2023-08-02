@@ -1,0 +1,74 @@
+import React, { useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { addNote } from '../../redux/actions/noteActions';
+import { NoteCategory, Note } from '../../helpers/types/noteTypes';
+import dateParser from '../../utils/dataParser';
+
+import {AddNoteForm} from './AddNoteForm.styled'
+
+interface NoteFormProps {
+  categories: NoteCategory[];
+  onClose: () => void;
+}
+
+const NoteForm: React.FC<NoteFormProps> = ({ onClose,categories }) => {
+  const [name, setName] = useState('')
+  const [noteContent, setNoteContent] = useState('');
+  const [selectedCategory, setSelectedCategory] = useState<NoteCategory | ''>('');
+
+  const dispatch = useDispatch();
+
+  const handleAddNote = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (noteContent.trim() !== '' && selectedCategory !== '') {
+      const datesMentioned = dateParser(noteContent);
+      const newNote: Note = {
+        id: Date.now(),
+        name: name,
+        createdAt: new Date(Date.now()).toLocaleString(),
+        content: noteContent,
+        category: selectedCategory,
+        datesMentioned: datesMentioned, // You can add date parsing here if needed
+        archived: false,
+      };
+
+      dispatch(addNote(newNote));
+      setNoteContent('');
+      setSelectedCategory('');
+      onClose();
+    }
+  };
+
+  return (
+    <AddNoteForm>
+      <label htmlFor="edit-note-name">Note Name:</label>
+      <input
+        id='edit-note-name'
+        type="text"
+        value={name}
+        onChange={(e) => setName(e.target.value)}
+        placeholder='Enter note name'
+      />
+      <label htmlFor="edit-category">Category:</label>
+      <select id="edit-category" value={selectedCategory} onChange={(e) => setSelectedCategory(e.target.value as NoteCategory)}>
+        <option value="">Select category</option>
+        {categories.map((category) => (
+          <option key={category} value={category}>
+            {category}
+          </option>
+        ))}
+      </select>
+        <label htmlFor="edit-note-content">Note Content:</label>
+        <input
+          id='edit-note-content'
+          type="text"
+          value={noteContent}
+          onChange={(e) => setNoteContent(e.target.value)}
+          placeholder="Enter note content"
+        />
+      <button onClick={handleAddNote}>Add Note</button>
+    </AddNoteForm>
+  );
+};
+
+export default NoteForm;
