@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
 import { Note,NoteCategory } from './helpers/types/noteTypes';
-import NoteForm from './components/NoteForm/AddNoteForm';
+import NoteForm from './components/AddNoteForm/AddNoteForm';
 import NotesTable from './components/NotesTable/NotesTable';
 import Header from './components/Header/Header';
 import Modal from './components/Modal/Modal';
 import SummaryTable from './components/SummaryTable/SummaryTable';
 import AddNoteButton from './components/AddNoteButton/AddNoteButton';
-import EditNoteModal from './components/NoteForm/EditNoteForm';
+import EditNoteModal from './components/EditNoteForm/EditNoteForm';
 import Container from './components/Container/Container';
 
 const categories: NoteCategory[] = ['Task', 'Random Thought', 'Idea'];
@@ -39,10 +39,10 @@ const App: React.FC = () => {
       <NotesTable categories={categories} onOpenEditNoteModal={handleOpenEditNoteModal} />
       <AddNoteButton onClick={handleOpenAddNoteModal}/>
         <Modal isOpen={isAddNoteModalOpen} onClose={handleCloseAddNoteModal}>
-          <NoteForm categories={categories} />
+          <NoteForm onClose={handleCloseAddNoteModal} categories={categories} />
         </Modal>
         <Modal isOpen={isEditNoteModalOpen} onClose={handleCloseEditNoteModal}>
-         {selectedNote && <EditNoteModal isOpen={isEditNoteModalOpen} note={selectedNote} onClose={handleCloseEditNoteModal} categories={categories}/>}
+         {selectedNote && <EditNoteModal  note={selectedNote} onClose={handleCloseEditNoteModal} categories={categories}/>}
         </Modal>
       <SummaryTable categories={categories} />
     </Container>

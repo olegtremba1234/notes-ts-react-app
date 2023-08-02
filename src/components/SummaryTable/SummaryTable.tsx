@@ -4,7 +4,7 @@ import { RootState } from '../../redux/reducers/rootReducer';
 import { NoteCategory } from '../../helpers/types/noteTypes';
 import { SummaryData } from '../../helpers/types/summaryTypes';
 
-import { Table, TableHeaderCell, TableCell } from './SummaryTable.styled';
+import { TableContainer ,Table, TableHeaderCell, TableCell, TableRow } from './SummaryTable.styled';
 
 interface SummaryTableProps {
   categories: NoteCategory[];
@@ -27,6 +27,7 @@ const SummaryTable: React.FC<SummaryTableProps> = ({ categories }) => {
   const archivedNotesByCategory: SummaryData = countNotesByCategory(categories, false);
 
   return (
+    <TableContainer>
     <Table>
       <thead>
         <tr>
@@ -37,14 +38,15 @@ const SummaryTable: React.FC<SummaryTableProps> = ({ categories }) => {
       </thead>
       <tbody>
         {categories.map((category) => (
-          <tr key={category}>
+          <TableRow key={category}>
             <TableCell>{category}</TableCell>
             <TableCell>{activeNotesByCategory[category]}</TableCell>
             <TableCell>{archivedNotesByCategory[category]}</TableCell>
-          </tr>
+          </TableRow>
         ))}
       </tbody>
     </Table>
+    </TableContainer>
   );
 };
 

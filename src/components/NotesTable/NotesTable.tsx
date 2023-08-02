@@ -1,10 +1,15 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from '../../redux/reducers/rootReducer';
 import { Note, NoteCategory } from '../../helpers/types/noteTypes';
-import { archiveNote, unarchiveNote, removeNote, editNote } from '../../redux/actions/noteActions';
+import { archiveNote, unarchiveNote, removeNote } from '../../redux/actions/noteActions';
 
-import {NoteTable, Td, Th,Thead} from './NoteTable.styled'
+import { NoteTableContainer, NoteTable, Tr, Td, Th, Thead, ActionButton } from './NoteTable.styled'
+
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faBoxArchive,faPen,faTrash } from '@fortawesome/free-solid-svg-icons'
+
+
 
 interface NotesTableProps {
   categories: NoteCategory[];
@@ -13,7 +18,13 @@ interface NotesTableProps {
 
 const NotesTable: React.FC<NotesTableProps> = ({ categories,onOpenEditNoteModal }) => {
   const activeNotes = useSelector((state: RootState) => state.note.activeNotes);
+  const archivedNotes = useSelector((state: RootState) => state.note.archivedNotes);
   const dispatch = useDispatch();
+  const [showArchived, setShowArchived] = useState(false);
+
+  const handleToggleArchived = () => {
+    setShowArchived((prevShowArchived) => !prevShowArchived);
+  };
 
     const handleEditNote = (note: Note) => {
        onOpenEditNoteModal(note);
@@ -32,6 +43,7 @@ const NotesTable: React.FC<NotesTableProps> = ({ categories,onOpenEditNoteModal 
   };
 
   return (
+    <NoteTableContainer>
     <NoteTable>
       <Thead>
         <tr>
@@ -41,25 +53,69 @@ const NotesTable: React.FC<NotesTableProps> = ({ categories,onOpenEditNoteModal 
           <Th>Content</Th>
           <Th>Dates</Th>
           <Th></Th>
-          <Th></Th>
+          <Th>
+              <label>
+                <ActionButton onClick={handleToggleArchived}>
+                  <FontAwesomeIcon icon={faBoxArchive} size='lg'/>
+                </ActionButton>
+              {/* <input type="checkbox" checked={showArchived} onChange={() => setShowArchived(!showArchived)} /> */}
+            </label>
+          </Th>
           <Th></Th>
         </tr>
       </Thead>
       <tbody>
-        {activeNotes.map((note) => (
-          <tr key={note.id}>
+          {showArchived
+            ? archivedNotes.map((note) => (
+                <Tr key={note.id}>
+                  <Td>{note.name}</Td>
+                  <Td>{note.createdAt}</Td>
+                  <Td>{note.category}</Td>
+                  <Td>{note.content}</Td>
+                  <Td>{note.datesMentioned.join(', ')}</Td>
+                <Td>
+                  <ActionButton onClick={() => handleEditNote(note)}>
+                    <FontAwesomeIcon icon={faPen} size="lg" />
+                  </ActionButton>
+                </Td>
+                <Td>
+                  <ActionButton onClick={() => handleUnarchiveNote(note.id)}>
+                    <FontAwesomeIcon icon={faBoxArchive} size='lg'/>
+                  </ActionButton>
+                </Td>
+                <Td><ActionButton onClick={() => handleRemoveNote(note.id)}>
+                  <FontAwesomeIcon icon={faTrash} size="lg" />
+                </ActionButton>
+                </Td>
+                </Tr>
+              ))
+            : activeNotes.map((note) => (
+          <Tr key={note.id}>
             <Td>{note.name}</Td>
             <Td>{note.createdAt}</Td>
             <Td>{note.category}</Td>
             <Td>{note.content}</Td>
-                <Td>{note.datesMentioned.join(', ')}</Td>
-                <Td><button onClick={()=> handleEditNote(note)}>Edit</button></Td>
-            <Td><button onClick={() => handleArchiveNote(note.id)}>{note.archived ? 'Unarchive' : 'Archive'}</button></Td>
-            <Td><button onClick={() => handleRemoveNote(note.id)}>Remove</button></Td>
-          </tr>
+            <Td>{note.datesMentioned.join(', ')}</Td>
+            <Td>
+              <ActionButton onClick={() => handleEditNote(note)}>
+                <FontAwesomeIcon icon={faPen} size="lg" />
+              </ActionButton>
+            </Td>
+            <Td>
+              <ActionButton onClick={() => handleArchiveNote(note.id)}>
+                <FontAwesomeIcon icon={faBoxArchive} size='lg'/>
+              </ActionButton>
+            </Td>
+            <Td>
+              <ActionButton onClick={() => handleRemoveNote(note.id)}>
+                <FontAwesomeIcon icon={faTrash} size="lg" />
+              </ActionButton>
+            </Td>
+          </Tr>
         ))}
       </tbody>
     </NoteTable>
+    </NoteTableContainer>
   );
 };
 
