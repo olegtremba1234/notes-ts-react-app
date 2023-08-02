@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, MouseEvent } from 'react';
 import { ModalContainer, ModalContent, CloseButton } from './Modal.styled'
 
 interface ModalProps {
@@ -8,7 +8,11 @@ interface ModalProps {
 }
 
 const Modal: React.FC<ModalProps> = ({ isOpen, onClose, children }) => {
-  const modalContentRef = useRef<HTMLDivElement>(null);
+  const handleBackdropClick = (event: MouseEvent<HTMLDivElement>) => {
+  if (event.target === event.currentTarget) {
+    onClose();
+  }
+  };
 
   useEffect(() => {
     const handleEscapeKeyPress = (event: KeyboardEvent) => {
@@ -16,21 +20,13 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, children }) => {
         onClose();
       }
     };
-
-    const handleClickOutsideModal = (event: MouseEvent) => {
-      if (modalContentRef.current && !modalContentRef.current.contains(event.target as Node)) {
-        onClose();
-      }
-    };
-
+  
     if (isOpen) {
       document.addEventListener('keydown', handleEscapeKeyPress);
-      document.addEventListener('click', handleClickOutsideModal);
     }
 
     return () => {
       document.removeEventListener('keydown', handleEscapeKeyPress);
-      document.removeEventListener('click', handleClickOutsideModal);
     };
   }, [isOpen, onClose]);
 
@@ -38,7 +34,7 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, children }) => {
 
   return (
     
-        <ModalContainer>
+        <ModalContainer onClick={handleBackdropClick}>
           <ModalContent>
             <CloseButton onClick={onClose}>×</CloseButton>
               {children}

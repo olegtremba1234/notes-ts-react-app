@@ -3,13 +3,10 @@ import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from '../../redux/reducers/rootReducer';
 import { Note, NoteCategory } from '../../helpers/types/noteTypes';
 import { archiveNote, unarchiveNote, removeNote } from '../../redux/actions/noteActions';
-
-import { NoteTableContainer, NoteTable, Tr, Td, Th, Thead, ActionButton } from './NoteTable.styled'
-
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faBoxArchive,faPen,faTrash } from '@fortawesome/free-solid-svg-icons'
 
-
+import { NoteTableContainer, NoteTable, Tr, Td, Th, Thead, ActionButton } from './NoteTable.styled'
 
 interface NotesTableProps {
   categories: NoteCategory[];
@@ -38,8 +35,11 @@ const NotesTable: React.FC<NotesTableProps> = ({ categories,onOpenEditNoteModal 
     dispatch(unarchiveNote(id));
   };
 
-  const handleRemoveNote = (id: number) => {
-    dispatch(removeNote(id));
+  const removeNoteModal = (id: number) => {
+    const confirmation = window.confirm('Are you sure you want to remove this note?');
+    if (confirmation) {
+      dispatch(removeNote(id));
+    }
   };
 
   return (
@@ -64,7 +64,8 @@ const NotesTable: React.FC<NotesTableProps> = ({ categories,onOpenEditNoteModal 
           <Th></Th>
         </tr>
       </Thead>
-      <tbody>
+        <tbody>
+          
           {showArchived
             ? archivedNotes.map((note) => (
                 <Tr key={note.id}>
@@ -83,9 +84,11 @@ const NotesTable: React.FC<NotesTableProps> = ({ categories,onOpenEditNoteModal 
                     <FontAwesomeIcon icon={faBoxArchive} size='lg'/>
                   </ActionButton>
                 </Td>
-                <Td><ActionButton onClick={() => handleRemoveNote(note.id)}>
-                  <FontAwesomeIcon icon={faTrash} size="lg" />
-                </ActionButton>
+                <Td>
+                  <ActionButton onClick={() => removeNoteModal(note.id)}>
+                    <FontAwesomeIcon icon={faTrash} size="lg" />
+                  </ActionButton>
+                
                 </Td>
                 </Tr>
               ))
@@ -107,9 +110,9 @@ const NotesTable: React.FC<NotesTableProps> = ({ categories,onOpenEditNoteModal 
               </ActionButton>
             </Td>
             <Td>
-              <ActionButton onClick={() => handleRemoveNote(note.id)}>
-                <FontAwesomeIcon icon={faTrash} size="lg" />
-              </ActionButton>
+              <ActionButton onClick={() => removeNoteModal(note.id)}>
+                  <FontAwesomeIcon icon={faTrash} size="lg" />
+                </ActionButton>
             </Td>
           </Tr>
         ))}
