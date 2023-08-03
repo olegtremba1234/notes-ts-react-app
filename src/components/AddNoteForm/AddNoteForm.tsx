@@ -28,7 +28,7 @@ const NoteForm: React.FC<NoteFormProps> = ({ onClose,categories }) => {
         createdAt: new Date(Date.now()).toLocaleString(),
         content: noteContent,
         category: selectedCategory,
-        datesMentioned: datesMentioned, // You can add date parsing here if needed
+        datesMentioned: datesMentioned,
         archived: false,
       };
 

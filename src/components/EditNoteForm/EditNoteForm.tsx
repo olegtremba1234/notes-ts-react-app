@@ -3,6 +3,7 @@ import { useDispatch } from 'react-redux';
 import { Note, NoteCategory } from '../../helpers/types/noteTypes';
 import { editNote } from '../../redux/actions/noteActions';
 import { EditNoteForm } from './EditNoteForm.styled';
+import dateParser from '../../utils/dataParser';
 
 interface EditNoteModalProps {
   // isOpen: boolean;
@@ -23,6 +24,7 @@ const EditNoteModal: React.FC<EditNoteModalProps> = ({ onClose, note, categories
       name: editedName,
       content: editedContent,
       category: editedCategory,
+      datesMentioned: dateParser(editedContent)
     };
     dispatch(editNote(editedNote));
     onClose();
