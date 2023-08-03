@@ -1,11 +1,11 @@
 {
   "files": {
-    "main.js": "/notes-ts-react-app/static/js/main.40525b50.js",
+    "main.js": "/notes-ts-react-app/static/js/main.d9bb178a.js",
     "static/media/wood.png": "/notes-ts-react-app/static/media/wood.ccbe3813161591a31362.png",
     "index.html": "/notes-ts-react-app/index.html",
-    "main.40525b50.js.map": "/notes-ts-react-app/static/js/main.40525b50.js.map"
+    "main.d9bb178a.js.map": "/notes-ts-react-app/static/js/main.d9bb178a.js.map"
   },
   "entrypoints": [
-    "static/js/main.40525b50.js"
+    "static/js/main.d9bb178a.js"
   ]
 }
