@@ -8,6 +8,7 @@ import SummaryTable from './components/SummaryTable/SummaryTable';
 import AddNoteButton from './components/AddNoteButton/AddNoteButton';
 import EditNoteModal from './components/EditNoteForm/EditNoteForm';
 import Container from './components/Container/Container';
+import './App.css'
 
 const categories: NoteCategory[] = ['Task', 'Random Thought', 'Idea'];
 
