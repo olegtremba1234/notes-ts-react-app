@@ -3,8 +3,7 @@ import { useDispatch } from 'react-redux';
 import { addNote } from '../../redux/actions/noteActions';
 import { NoteCategory, Note } from '../../helpers/types/noteTypes';
 import dateParser from '../../utils/dataParser';
-
-import {AddNoteForm} from './AddNoteForm.styled'
+import Label from '../Label/Label';
 
 interface NoteFormProps {
   categories: NoteCategory[];
@@ -39,18 +38,27 @@ const NoteForm: React.FC<NoteFormProps> = ({ onClose,categories }) => {
     }
   };
 
+  const inputStyle = ' p-2 mx-0 my-1 border border-gray-300 rounded-md text-sm';
+  const buttonStyle = ' p-2 mx-0 my-1 border border-gray-300 rounded-md text-sm bg-blue-500 text-white cursor-pointer hover:bg-blue-600';
+
   return (
-    <AddNoteForm>
-      <label htmlFor="edit-note-name">Note Name:</label>
+    <form className='flex flex-col'>
+      <Label htmlFor="edit-note-name" text='Note Name:'/>
       <input
         id='edit-note-name'
         type="text"
         value={name}
         onChange={(e) => setName(e.target.value)}
         placeholder='Enter note name'
+        className={inputStyle}
       />
-      <label htmlFor="edit-category">Category:</label>
-      <select id="edit-category" value={selectedCategory} onChange={(e) => setSelectedCategory(e.target.value as NoteCategory)}>
+      <Label htmlFor="edit-category" text='Category:'/>
+      <select
+        id="edit-category"
+        value={selectedCategory}
+        onChange={(e) => setSelectedCategory(e.target.value as NoteCategory)}
+        className={inputStyle}
+      >
         <option value="">Select category</option>
         {categories.map((category) => (
           <option key={category} value={category}>
@@ -58,16 +66,22 @@ const NoteForm: React.FC<NoteFormProps> = ({ onClose,categories }) => {
           </option>
         ))}
       </select>
-        <label htmlFor="edit-note-content">Note Content:</label>
+        <Label htmlFor="edit-note-content" text='Note Content:'/>
         <input
           id='edit-note-content'
           type="text"
           value={noteContent}
           onChange={(e) => setNoteContent(e.target.value)}
-          placeholder="Enter note content"
+        placeholder="Enter note content"
+        className={inputStyle}
         />
-      <button onClick={handleAddNote}>Add Note</button>
-    </AddNoteForm>
+      <button
+        onClick={handleAddNote}
+        className={buttonStyle}
+      >
+        Add Note
+      </button>
+    </form>
   );
 };
 

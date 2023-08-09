@@ -1,7 +1,5 @@
 import React from 'react';
 
-import {TableTemplate, Thead, Th, TableContainer} from './Table.styled'
-
 interface TableProps {
   data: any[]; 
   columns: string[]; 
@@ -10,22 +8,22 @@ interface TableProps {
 
 const Table: React.FC<TableProps> = ({ data, columns, renderRow }) => {
     return (
-    <TableContainer>
-        <TableTemplate>
-            <Thead>
+    <div className="mt-5 w-full rounded-md shadow-md overflow-hidden">
+        <table className="w-full border-collapse border border-solid border-gray-300 text-gray-900 bg-white">
+            <thead className=' bg-gray-100 font-bold'>
                 <tr>
                 {columns.map((column) => (
-                   <Th key={column}>{column}</Th>
+                   <th className=' p-2 border-b border-gray-300 text-center' key={column}>{column}</th>
                 ))}
                 </tr>
-            </Thead>
+            </thead>
             <tbody>
                 {data.map((item) => (
                 <React.Fragment key={item.id}>{renderRow(item)}</React.Fragment>
                 ))}
             </tbody>
-        </TableTemplate>
-    </TableContainer>        
+        </table>
+    </div>        
   );
 };
 

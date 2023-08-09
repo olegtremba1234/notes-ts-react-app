@@ -2,11 +2,10 @@ import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { Note, NoteCategory } from '../../helpers/types/noteTypes';
 import { editNote } from '../../redux/actions/noteActions';
-import { EditNoteForm } from './EditNoteForm.styled';
 import dateParser from '../../utils/dataParser';
+import Label from '../Label/Label';
 
 interface EditNoteModalProps {
-  // isOpen: boolean;
   onClose: () => void;
   note: Note;
   categories: NoteCategory[];
@@ -30,31 +29,35 @@ const EditNoteModal: React.FC<EditNoteModalProps> = ({ onClose, note, categories
     onClose();
   };
 
-  // if (!isOpen) return null;
+  const inputStyle = ' p-2 mx-0 my-1 border border-gray-300 rounded-md text-sm';
+  const buttonStyle = ' p-2 mx-0 my-1 border border-gray-300 rounded-md text-sm bg-blue-500 text-white cursor-pointer hover:bg-blue-600';
 
   return (
-        <EditNoteForm>
-          <label htmlFor="edit-note-name">Edit Note Name:</label>
+        <form className='flex flex-col'>
+          <Label htmlFor='edit-note-name' text='Edit Note Name:' />
           <input
             id="edit-note-name"
             type="text"
             value={editedName}
             onChange={(e) => setEditedName(e.target.value)}
             placeholder="Enter note name"
+            className={inputStyle}
           />
-          <label htmlFor="edit-note-content">Edit Note Content:</label>
+          <Label htmlFor='edit-note-content' text='Edit Note Content:' />
           <input
             id="edit-note-content"
             type="text"
             value={editedContent}
             onChange={(e) => setEditedContent(e.target.value)}
             placeholder="Enter note content"
+            className={inputStyle}
           />
-          <label htmlFor="edit-category">Edit Category:</label>
+          <Label htmlFor='edit-category' text='Edit Category:' />
           <select
             id="edit-category"
             value={editedCategory}
             onChange={(e) => setEditedCategory(e.target.value as NoteCategory)}
+            className={inputStyle}
           >
             <option value="">Select category</option>
             {categories.map((category) => (
@@ -63,9 +66,19 @@ const EditNoteModal: React.FC<EditNoteModalProps> = ({ onClose, note, categories
               </option>
             ))}
           </select>
-          <button onClick={handleSaveNote}>Save Changes</button>
-          <button onClick={onClose}>Cancel</button>
-        </EditNoteForm>
+          <button
+            onClick={handleSaveNote}
+            className={buttonStyle}
+          >
+            Save Changes
+          </button>
+          <button
+            onClick={onClose}
+            className={buttonStyle}
+          >
+            Cancel
+          </button>
+        </form>
   );
 };
 

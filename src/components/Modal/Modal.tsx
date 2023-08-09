@@ -1,5 +1,4 @@
 import React, { useEffect, MouseEvent } from 'react';
-import { ModalContainer, ModalContent, CloseButton } from './Modal.styled'
 
 interface ModalProps {
   isOpen: boolean;
@@ -34,12 +33,20 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, children }) => {
 
   return (
     
-        <ModalContainer onClick={handleBackdropClick}>
-          <ModalContent>
-            <CloseButton onClick={onClose}>×</CloseButton>
+    <div
+      onClick={handleBackdropClick}
+      className=' fixed top-0 left-0 w-full h-full bg-black bg-opacity-50 z-10'
+    >
+          <div className="modal-styles bg-white p-5 border border-gray-300 rounded-lg max-w-2xl">
+        <span
+          className=' text-gray-400 float-right text-2xl font-bold cursor-pointer hover:text-black '
+          onClick={onClose}
+        >
+          ×
+        </span>
               {children}
-          </ModalContent>
-        </ModalContainer>
+          </div>
+        </div>
  
   );
 };

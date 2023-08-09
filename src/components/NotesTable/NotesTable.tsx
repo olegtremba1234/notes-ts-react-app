@@ -7,8 +7,6 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faBoxArchive, faPen, faTrash } from '@fortawesome/free-solid-svg-icons'
 import Table from '../Table/Table';
 
-import {  Tr, Td,  ActionButton } from './NoteTable.styled'
-
 interface NotesTableProps {
   categories: NoteCategory[];
   onOpenEditNoteModal: (note: Note) => void;
@@ -40,28 +38,36 @@ const NotesTable: React.FC<NotesTableProps> = ({ categories,onOpenEditNoteModal 
   const columns = ['Name', 'Created', 'Category', 'Content', 'Dates', '', '', ''];
 
   const renderRow = (note: Note) => (
-     <Tr key={note.id} archived={note.archived}>
-            <Td>{note.name}</Td>
-            <Td>{note.createdAt}</Td>
-            <Td>{note.category}</Td>
-            <Td>{note.content}</Td>
-            <Td>{note.datesMentioned.join(', ')}</Td>
-            <Td>
-              <ActionButton onClick={() => handleEditNote(note)}>
-                <FontAwesomeIcon icon={faPen} size="lg" />
-              </ActionButton>
-            </Td>
-            <Td>
-              <ActionButton onClick={() => handleToggleArchiveNote(note)}>
-                <FontAwesomeIcon icon={faBoxArchive} size='lg'/>
-              </ActionButton>
-            </Td>
-            <Td>
-              <ActionButton onClick={() => removeNoteModal(note.id)}>
-                  <FontAwesomeIcon icon={faTrash} size="lg" />
-                </ActionButton>
-            </Td>
-          </Tr>
+    <tr
+      key={note.id}
+      className={`border-t ${note.archived ? 'bg-gradient-to-r from-yellow-100 to-yellow-300 text-gray-500' : 'bg-white'} text-center`}>
+            <td className="px-3 py-2 border-b border-gray-300">{note.name}</td>
+            <td className="px-3 py-2 border-b border-gray-300">{note.createdAt}</td>
+            <td className="px-3 py-2 border-b border-gray-300">{note.category}</td>
+            <td className="px-3 py-2 border-b border-gray-300">{note.content}</td>
+            <td className="px-3 py-2 border-b border-gray-300">{note.datesMentioned.join(', ')}</td>
+            <td className="px-2 py-2 border-b border-gray-300">
+              <div className=' transition-all duration-300 ease-in-out hover:scale-110'>
+                <button onClick={() => handleEditNote(note)}>
+                  <FontAwesomeIcon icon={faPen} size="lg" />
+                </button>
+              </div>
+            </td>
+            <td className="px-2 py-2 border-b border-gray-300">
+              <div className=' transition-all duration-300 ease-in-out hover:scale-110'>
+                <button onClick={() => handleToggleArchiveNote(note)}>
+                  <FontAwesomeIcon icon={faBoxArchive} size='lg'/>
+                </button>
+              </div>
+            </td>
+            <td className="px-2 py-2 border-b border-gray-300">
+              <div className=' transition-all duration-300 ease-in-out hover:scale-110'>
+                <button onClick={() => removeNoteModal(note.id)}>
+                  <FontAwesomeIcon icon={faTrash} size="lg"/>
+                </button>
+              </div>
+            </td>
+          </tr>
    )
 
   return (

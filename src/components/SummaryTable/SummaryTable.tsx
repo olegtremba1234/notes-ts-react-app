@@ -5,8 +5,6 @@ import { NoteCategory, Note } from '../../helpers/types/noteTypes';
 import { SummaryData } from '../../helpers/types/summaryTypes';
 import Table from '../Table/Table';
 
-import {TableCell, TableRow } from './SummaryTable.styled';
-
 interface SummaryTableProps {
   categories: NoteCategory[];
 }
@@ -30,11 +28,11 @@ const SummaryTable: React.FC<SummaryTableProps> = ({ categories }) => {
   const columns = ['Category', 'Active Notes', 'Archived Notes'];
 
   const renderRow = (category: NoteCategory) => (
-    <TableRow key={category}>
-      <TableCell>{category}</TableCell>
-      <TableCell>{activeNotesByCategory[category] || 0}</TableCell>
-      <TableCell>{archivedNotesByCategory[category] || 0}</TableCell>
-    </TableRow>
+    <tr className='border-b border-gray-300'  key={category}>
+      <td className='p-2 text-center'>{category}</td>
+      <td className='p-2 text-center'>{activeNotesByCategory[category] || 0}</td>
+      <td className='p-2 text-center'>{archivedNotesByCategory[category] || 0}</td>
+    </tr>
   );
 
   return (
