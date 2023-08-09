@@ -37,31 +37,34 @@ const NotesTable: React.FC<NotesTableProps> = ({ categories,onOpenEditNoteModal 
 
   const columns = ['Name', 'Created', 'Category', 'Content', 'Dates', '', '', ''];
 
+  const tdStyle = 'px-2 py-2 border-b border-gray-300'
+  const btnHoverStyle = 'transition-all duration-300 ease-in-out hover:scale-110'
+
   const renderRow = (note: Note) => (
     <tr
       key={note.id}
       className={`border-t ${note.archived ? 'bg-gradient-to-r from-yellow-100 to-yellow-300 text-gray-500' : 'bg-white'} text-center`}>
-            <td className="px-3 py-2 border-b border-gray-300">{note.name}</td>
-            <td className="px-3 py-2 border-b border-gray-300">{note.createdAt}</td>
-            <td className="px-3 py-2 border-b border-gray-300">{note.category}</td>
-            <td className="px-3 py-2 border-b border-gray-300">{note.content}</td>
-            <td className="px-3 py-2 border-b border-gray-300">{note.datesMentioned.join(', ')}</td>
-            <td className="px-2 py-2 border-b border-gray-300">
-              <div className=' transition-all duration-300 ease-in-out hover:scale-110'>
+            <td className={tdStyle}>{note.name}</td>
+            <td className={tdStyle}>{note.createdAt}</td>
+            <td className={tdStyle}>{note.category}</td>
+            <td className={tdStyle}>{note.content}</td>
+            <td className={tdStyle}>{note.datesMentioned.join(', ')}</td>
+            <td className={tdStyle}>
+              <div className={btnHoverStyle}>
                 <button onClick={() => handleEditNote(note)}>
                   <FontAwesomeIcon icon={faPen} size="lg" />
                 </button>
               </div>
             </td>
-            <td className="px-2 py-2 border-b border-gray-300">
-              <div className=' transition-all duration-300 ease-in-out hover:scale-110'>
+            <td className={tdStyle}>
+              <div className={btnHoverStyle}>
                 <button onClick={() => handleToggleArchiveNote(note)}>
                   <FontAwesomeIcon icon={faBoxArchive} size='lg'/>
                 </button>
               </div>
             </td>
-            <td className="px-2 py-2 border-b border-gray-300">
-              <div className=' transition-all duration-300 ease-in-out hover:scale-110'>
+            <td className={tdStyle}>
+              <div className={btnHoverStyle}>
                 <button onClick={() => removeNoteModal(note.id)}>
                   <FontAwesomeIcon icon={faTrash} size="lg"/>
                 </button>

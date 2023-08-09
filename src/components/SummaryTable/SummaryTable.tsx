@@ -27,11 +27,13 @@ const SummaryTable: React.FC<SummaryTableProps> = ({ categories }) => {
 
   const columns = ['Category', 'Active Notes', 'Archived Notes'];
 
+  const tdStyle = 'p-2 text-center'
+
   const renderRow = (category: NoteCategory) => (
     <tr className='border-b border-gray-300'  key={category}>
-      <td className='p-2 text-center'>{category}</td>
-      <td className='p-2 text-center'>{activeNotesByCategory[category] || 0}</td>
-      <td className='p-2 text-center'>{archivedNotesByCategory[category] || 0}</td>
+      <td className={tdStyle}>{category}</td>
+      <td className={tdStyle}>{activeNotesByCategory[category] || 0}</td>
+      <td className={tdStyle}>{archivedNotesByCategory[category] || 0}</td>
     </tr>
   );
 
