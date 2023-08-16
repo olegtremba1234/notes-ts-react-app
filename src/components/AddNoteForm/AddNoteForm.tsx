@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { addNote } from '../../redux/actions/noteActions';
+import {AppDispatch} from '../../redux/store'
+import {addNote} from '../../redux/notes/noteOperations'
 import { NoteCategory, Note } from '../../helpers/types/noteTypes';
-import dateParser from '../../utils/dataParser';
 import Label from '../Label/Label';
 
 interface NoteFormProps {
@@ -15,19 +15,18 @@ const NoteForm: React.FC<NoteFormProps> = ({ onClose,categories }) => {
   const [noteContent, setNoteContent] = useState('');
   const [selectedCategory, setSelectedCategory] = useState<NoteCategory | ''>('');
 
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<AppDispatch>();
 
   const handleAddNote = (e: React.FormEvent) => {
     e.preventDefault();
     if (noteContent.trim() !== '' && selectedCategory !== '') {
-      const datesMentioned = dateParser(noteContent);
+      // const datesMentioned = dateParser(noteContent);
       const newNote: Note = {
-        id: Date.now(),
         name: name,
-        createdAt: new Date(Date.now()).toLocaleString(),
+        // createdAt: new Date(Date.now()).toLocaleString(),
         content: noteContent,
         category: selectedCategory,
-        datesMentioned: datesMentioned,
+        datesMentioned: [],
         archived: false,
       };
 

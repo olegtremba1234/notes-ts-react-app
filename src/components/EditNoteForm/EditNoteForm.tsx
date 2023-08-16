@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
+import { AppDispatch } from '../../redux/store';
+import {updateNote} from '../../redux/notes/noteOperations'
 import { Note, NoteCategory } from '../../helpers/types/noteTypes';
-import { editNote } from '../../redux/actions/noteActions';
-import dateParser from '../../utils/dataParser';
 import Label from '../Label/Label';
 
 interface EditNoteModalProps {
@@ -15,7 +15,7 @@ const EditNoteModal: React.FC<EditNoteModalProps> = ({ onClose, note, categories
   const [editedName, setEditedName] = useState(note.name);
   const [editedContent, setEditedContent] = useState(note.content);
   const [editedCategory, setEditedCategory] = useState(note.category);
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<AppDispatch>();
 
   const handleSaveNote = () => {
     const editedNote: Note = {
@@ -23,9 +23,8 @@ const EditNoteModal: React.FC<EditNoteModalProps> = ({ onClose, note, categories
       name: editedName,
       content: editedContent,
       category: editedCategory,
-      datesMentioned: dateParser(editedContent)
     };
-    dispatch(editNote(editedNote));
+    dispatch(updateNote({note:editedNote}));
     onClose();
   };
 

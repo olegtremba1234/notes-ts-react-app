@@ -1,8 +1,8 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { RootState } from '../../redux/reducers/rootReducer';
+import { RootState,AppDispatch } from '../../redux/store';
 import { Note, NoteCategory } from '../../helpers/types/noteTypes';
-import { archiveNote, unarchiveNote, removeNote } from '../../redux/actions/noteActions';
+import {fetchAllNotes,updateNote,deleteNote } from '../../redux/notes/noteOperations'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faBoxArchive, faPen, faTrash } from '@fortawesome/free-solid-svg-icons'
 import Table from '../Table/Table';
@@ -13,25 +13,23 @@ interface NotesTableProps {
 }
 
 const NotesTable: React.FC<NotesTableProps> = ({ categories,onOpenEditNoteModal }) => {
-  const notes = useSelector((state: RootState) => state.note.notes);
-  const dispatch = useDispatch();
- 
-    const handleEditNote = (note: Note) => {
-       onOpenEditNoteModal(note);
-    }
-    
- const handleToggleArchiveNote = (note: Note) => {
-    if (note.archived) {
-      dispatch(unarchiveNote(note.id));
-    } else {
-      dispatch(archiveNote(note.id));
-    }
-  };
+  const notes = useSelector((state: RootState) => state.notes.entities);
+  const isLoading = useSelector((state: RootState) => state.notes.loading);
+  const dispatch = useDispatch<AppDispatch>();
 
-  const removeNoteModal = (id: number) => {
+  useEffect(() => {
+    dispatch(fetchAllNotes());
+  }, [dispatch]);
+  
+ 
+  const handleEditNote = (note: Note) => {
+    onOpenEditNoteModal(note);
+  }
+  
+  const removeNoteModal = (_id: string) => {
     const confirmation = window.confirm('Are you sure you want to remove this note?');
-    if (confirmation) {
-      dispatch(removeNote(id));
+      if (confirmation) {
+      dispatch(deleteNote(_id));
     }
   };
 
@@ -42,7 +40,7 @@ const NotesTable: React.FC<NotesTableProps> = ({ categories,onOpenEditNoteModal 
 
   const renderRow = (note: Note) => (
     <tr
-      key={note.id}
+      key={note._id}
       className={`border-t ${note.archived ? 'bg-gradient-to-r from-yellow-100 to-yellow-300 text-gray-500' : 'bg-white'} text-center`}>
             <td className={tdStyle}>{note.name}</td>
             <td className={tdStyle}>{note.createdAt}</td>
@@ -58,14 +56,14 @@ const NotesTable: React.FC<NotesTableProps> = ({ categories,onOpenEditNoteModal 
             </td>
             <td className={tdStyle}>
               <div className={btnHoverStyle}>
-                <button onClick={() => handleToggleArchiveNote(note)}>
+                <button onClick={() => dispatch(updateNote({note}))}>
                   <FontAwesomeIcon icon={faBoxArchive} size='lg'/>
                 </button>
               </div>
             </td>
             <td className={tdStyle}>
               <div className={btnHoverStyle}>
-                <button onClick={() => removeNoteModal(note.id)}>
+                <button onClick={() => note._id && removeNoteModal(note._id)}>
                   <FontAwesomeIcon icon={faTrash} size="lg"/>
                 </button>
               </div>
@@ -74,7 +72,10 @@ const NotesTable: React.FC<NotesTableProps> = ({ categories,onOpenEditNoteModal 
    )
 
   return (
-    <Table data={notes} columns={columns} renderRow={renderRow} />
+    <>
+      <Table data={notes} columns={columns} renderRow={renderRow} />
+      {isLoading === 'pending' && <div>Loading...</div>}
+    </>
   );
 };
 

@@ -1,6 +1,6 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
-import { RootState } from '../../redux/reducers/rootReducer';
+import { RootState } from '../../redux/store';
 import { NoteCategory, Note } from '../../helpers/types/noteTypes';
 import { SummaryData } from '../../helpers/types/summaryTypes';
 import Table from '../Table/Table';
@@ -10,7 +10,7 @@ interface SummaryTableProps {
 }
 
 const SummaryTable: React.FC<SummaryTableProps> = ({ categories }) => {
-  const notes = useSelector((state: RootState) => state.note.notes);
+  const notes = useSelector((state: RootState) => state.notes.entities);
 
   const countNotesByCategory = (notes: Note[], active: boolean): SummaryData => {
     return notes.reduce((counts: SummaryData, note) => {
