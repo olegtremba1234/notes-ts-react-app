@@ -20,16 +20,14 @@ const NoteForm: React.FC<NoteFormProps> = ({ onClose,categories }) => {
   const handleAddNote = (e: React.FormEvent) => {
     e.preventDefault();
     if (noteContent.trim() !== '' && selectedCategory !== '') {
-      // const datesMentioned = dateParser(noteContent);
       const newNote: Note = {
+        _id: "",
         name: name,
-        // createdAt: new Date(Date.now()).toLocaleString(),
         content: noteContent,
         category: selectedCategory,
         datesMentioned: [],
         archived: false,
       };
-
       dispatch(addNote(newNote));
       setNoteContent('');
       setSelectedCategory('');

@@ -39,8 +39,23 @@ export const updateNote = createAsyncThunk(
   async (payload: { note: Note }, thunkAPI) => {
     const { note } = payload;
     try {
-      const updatedNote = { ...note, archived: !note.archived };
-      const response = await axios.put(`/notes/${note._id}`, updatedNote);
+      const updatedNote = { ...note };
+      const response = await axios.patch(`/notes/${note._id}`, updatedNote);
+      return response.data;
+    } catch (error) {
+      console.log("error", error);
+      return thunkAPI.rejectWithValue(error);
+    }
+  }
+);
+
+export const archiveNote = createAsyncThunk(
+  "notes/archiveNote",
+  async (payload: { note: Note }, thunkAPI) => {
+    const { note } = payload;
+    try {
+      const archivedNote = { ...note, archived: !note.archived };
+      const response = await axios.patch(`/notes/${note._id}`, archivedNote);
       return response.data;
     } catch (error) {
       console.log("error", error);
@@ -51,10 +66,10 @@ export const updateNote = createAsyncThunk(
 
 export const deleteNote = createAsyncThunk(
   "notes/deleteNote",
-  async (id: string, thunkAPI) => {
+  async (_id: string, thunkAPI) => {
     try {
-      await axios.delete(`/api/notes/${id}`);
-      return id;
+      await axios.delete(`/notes/${_id}`);
+      return _id;
     } catch (error) {
       console.log("error", error);
       return thunkAPI.rejectWithValue(error);
